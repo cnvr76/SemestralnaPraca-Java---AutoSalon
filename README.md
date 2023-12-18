@@ -79,3 +79,7 @@ To pay off the debt, the client needs to add money to his balance, after which i
 
 To make refuel system actually useful, after rent every vehicle (that has fuel or battery level) starts to decrease his current level by 3 every 30 seconds
 Depending on the rented vehicle the gas prices will vary due to fuel type (petrol, gas, diesel or electricity)
+
+### Made by
+
+Kyrylo Kolot 3ZIG23
