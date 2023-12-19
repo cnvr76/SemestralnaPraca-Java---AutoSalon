@@ -22,6 +22,15 @@ public class AutoSalon implements AutoSalonFilters {
     // List of all vehicle packages names to loop over them in classPackage() and classExists() methods
     private final String[] packages = {"EVehicles", "MotorVehicles", "OtherVehicles"};
 
+    /**
+     * In the constructor, when the salon is initialized, we in advance read all the data,
+     * making objects from them and writing them to a separate array of all vehicles,
+     * because reading from file every time we need to sort smth is pretty inefficient
+     *
+     * Also, there we are calling a method to decrease current level, but it will only work if
+     * customer rented at least 1 vehicle
+     * @param customer - current customer for rental purposes
+     */
     public AutoSalon(Customer customer){
         this.customer = customer;
         this.poleVehicles = getVehiclesFromDB();
@@ -35,8 +44,8 @@ public class AutoSalon implements AutoSalonFilters {
     /****
      * Checking if Class exists (by its name) in the project
      *
-     * @param className
-     * @param packages
+     * @param className - name of the class we want to check if exists within the project folder
+     * @param packages - list of all packages where we want to check this class
      * @return
      */
     private boolean classExists(String className, String[] packages) {
@@ -52,7 +61,7 @@ public class AutoSalon implements AutoSalonFilters {
     }
 
     /***
-     * Basically the same, but it returns the package name where the existing class is
+     * Basically the same as classExists(), but it returns the package name where the existing class is
      *
      * @param className
      * @return
@@ -72,7 +81,7 @@ public class AutoSalon implements AutoSalonFilters {
     /***
      * Admin settings on adding vehicles
      *
-     * @return
+     * @return - returns String that is the same as the toString() method to write in the database
      */
     private String createNewVehicle() {
         Scanner scanner = new Scanner(System.in);
@@ -178,8 +187,8 @@ public class AutoSalon implements AutoSalonFilters {
     /***
      * Removes only one at a time by model
      *
-     * @param vehicle
-     * @return
+     * @param vehicle - Vehicle object we want to remove from database
+     * @return - returns if it was successful or not
      */
     private boolean removeVehicleFromDB(Vehicle vehicle){
         // With this we read all the lines to append and write to file later
@@ -211,7 +220,7 @@ public class AutoSalon implements AutoSalonFilters {
      * It is consists of other private methods (like getting the vehicle -> ...
      * ... -> removing from DB if exists -> updating list)
      *
-     * @param model
+     * @param model - string model parameter of the certain vehicle to find the object with the same input
      */
     public void removeVehicle(String model) {
         Vehicle vehicleToRemove = getVehicleByModel(Main.title(model));
@@ -224,8 +233,8 @@ public class AutoSalon implements AutoSalonFilters {
 
     /***
      *
-     * @param model
-     * @return
+     * @param model - model to find
+     * @return - returns object (or null) that contains requested model
      */
 
     public Vehicle getVehicleByModel(String model){
@@ -239,9 +248,9 @@ public class AutoSalon implements AutoSalonFilters {
 
     /***
      *
-     * @param str
-     * @param selection
-     * @return
+     * @param str - any string to find all the vehicles which models contain this string
+     * @param selection - selection of objects we want to search from
+     * @return - returns the array of found Vehicles
      */
     public Vehicle[] getVehiclesContainModel(String str, Vehicle[] selection){
         List<Vehicle> vehicles = new ArrayList<>();
@@ -255,7 +264,7 @@ public class AutoSalon implements AutoSalonFilters {
 
     /***
      * Initialising different type Vehicles on info from DB
-     * @return
+     * @return - returns the array of read and initialized vehicles from database
      */
     public Vehicle[] getVehiclesFromDB(){
         String[] read = readFromDB(dirPath);
@@ -317,9 +326,9 @@ public class AutoSalon implements AutoSalonFilters {
     /***
      * Writing (+ creating new Vehicle) to the DB
      *
-     * @param newVehicle
-     * @param append
-     * @param sep
+     * @param newVehicle - toString() info of the vehicle to add to database
+     * @param append - boolean param that checks if we want to append to the file or rewrite everything
+     * @param sep - string param with which we want to separate each line
      */
     private void writeInfoToDB(String newVehicle, boolean append, String sep) {
         try {
@@ -334,8 +343,8 @@ public class AutoSalon implements AutoSalonFilters {
     /***
      * Reading from DB text (Returning each line in String[] array)
      *
-     * @param filePath
-     * @return
+     * @param filePath - path to the database
+     * @return - returns the array of strings where each string is a line
      */
     private String[] readFromDB(String filePath){
         List<String> lines = new ArrayList<>();
@@ -400,9 +409,9 @@ public class AutoSalon implements AutoSalonFilters {
      * Filtering methods for customer
      * Method that returns the list filled with certain class name
      *
-     * @param type
-     * @return
-     * @param <T>
+     * @param type - type we want to find from the allVehicles array
+     * @return - Vehicle array of certain type found vehicles
+     * @param <T> - generic param that allows only to search for objects that extends Vehicle
      */
     @Override
     public <T extends Vehicle> List<T> getAllInstancesOf(Class<T> type){
@@ -420,7 +429,7 @@ public class AutoSalon implements AutoSalonFilters {
      * Returns all the files from the input package name
      *
      * @param packageName
-     * @return
+     * @return - returns string class list from input package name
      */
     private String[] getAllClassesFromPackage(String packageName) {
         List<String> classes = new ArrayList<>();
@@ -437,7 +446,7 @@ public class AutoSalon implements AutoSalonFilters {
     /***
      * Since returned classes from the package come in String type -> convert them to Class type
      *
-     * @param fullName
+     * @param fullName - name of the class we want to convert to actual class
      * @return
      */
     private Class<? extends Vehicle> convertStringToClass(String fullName){
@@ -506,8 +515,8 @@ public class AutoSalon implements AutoSalonFilters {
 
     /***
      *
-     * @param type
-     * @param selection
+     * @param type - gearbox type
+     * @param selection - which selection we want to filter
      * @return
      */
     public Vehicle[] gearBoxType(String type, Vehicle[] selection){
@@ -522,7 +531,7 @@ public class AutoSalon implements AutoSalonFilters {
 
     /***
      *
-     * @param state
+     * @param state - new/used
      * @param selection
      * @return
      */
@@ -554,7 +563,7 @@ public class AutoSalon implements AutoSalonFilters {
 
     /***
      *
-     * @param selection
+     * @param selection - sorts certain selection
      * @return
      */
     public Vehicle[] getSortedByHorsepower(Vehicle[] selection){
@@ -656,7 +665,9 @@ public class AutoSalon implements AutoSalonFilters {
         return sb.toString();
     }
 
-    // Method that decreases the fuel/battery level to make refuel system not so useless yk:)
+    /**
+     * Method that decreases the fuel/battery level to make refuel system not so useless yk:)
+     */
     private void decreaseLevel() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
