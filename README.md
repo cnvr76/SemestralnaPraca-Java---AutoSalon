@@ -15,7 +15,7 @@
 
 ### Saving and reading objects from file
 
-- `allVehicles.txt`: Txt file that contains all the created Vehicles which can be targeted by the type (it basically contains objects' toString() methods that later in code is separated and inserted as input parameters)
+- `allVehicles.txt`: Txt file that contains all the created Vehicles which can be targeted by the type (it basically contains objects' toString() methods that later in code are separated and inserted as input parameters)
 
 ### Reflection
 
@@ -71,7 +71,7 @@ To prevent customer from contacting with database there are 2 admin commands tha
 ### Debt system
 
 In the beginning, program asks for balance input apart from the customer's name, but it can be skipped, so the balance by default will be 0
-Money are needed for refuel and borrowing function, but if there is not enough -> it will be marked as debt (the current needed amount will be shown in the main menu at the top with red font color) 
+Money is needed for refuel and borrowing function, but if there is not enough -> it will be marked as debt (the current needed amount will be shown in the main menu at the top with red font color) 
 So, while debt is present, customer can't borrow any more vehicles (but still can refuel them), also can't return any and leave the salon:)
 To pay off the debt, the client needs to add money to his balance, after which it will be written off automatically
 
