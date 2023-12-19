@@ -4,12 +4,7 @@ import MotorVehicles.Scooter;
 import UserInteractions.Customer;
 import UserInteractions.Main;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Random;
-import java.util.Scanner;
 
 public abstract class Vehicle implements BorrowAble {
     // Current gasoline prices in SLovakia
@@ -25,7 +20,6 @@ public abstract class Vehicle implements BorrowAble {
     // Basic parameters for every Vehicle
     protected int numberOfSeats;
     private int rok;
-    protected double vehicleWeight, loadCapacity;
     protected int horsePower;
     protected String color, state;
     private String znacka, model;
@@ -38,6 +32,17 @@ public abstract class Vehicle implements BorrowAble {
 //    private static int idCount = 0;
 //    protected int id;
 
+    /**
+     * All the parameters that will contain all the vehicles no matter the certain type
+     * @param type - is used to distinguish different types while reading from the database
+     * @param znacka
+     * @param model
+     * @param color
+     * @param state
+     * @param rok
+     * @param numberOfSeats
+     * @param horsePower
+     */
     public Vehicle(String type, String znacka, String model, String color, String state, int rok, int numberOfSeats, int horsePower){
         this.znacka = znacka;
         this.model = model;
@@ -57,6 +62,13 @@ public abstract class Vehicle implements BorrowAble {
     public int getHorsePower(){
         return horsePower;
     }
+
+    /**
+     * This should have been an overload method that will search for the requested horsepower,
+     * but it was never used because of the sorting by horsepower, but, I guess, it would be nice additional filter
+     * @param searchedPower - power we want to find
+     * @return - returns a Vehicle with this horsepower (or null)
+     */
     public Vehicle getHorsePower(int searchedPower){
         if (searchedPower == this.horsePower){
             return this;
@@ -103,9 +115,10 @@ public abstract class Vehicle implements BorrowAble {
 
     public abstract int calculateRentalCost(int days);
 
-    /***
-     *
-     * @param amount
+    /**
+     * This method is used in AutoSalon method to decrease fuel/battery level for the refuel purposes
+     * Method contains all the exception handling so in AutoSalon there was only need for a timer
+     * @param amount - decreasing level by this param
      */
     public void consume(double amount) {
         if (this instanceof FuelVehicle) {
@@ -121,10 +134,10 @@ public abstract class Vehicle implements BorrowAble {
 
     // Overriding methods of BorrowAble to check if the vehicle is available
 
-    /***
+    /**
      *
-     * @param customer
-     * @return
+     * @param customer - using the current customer's info for rent
+     * @return - returns true if item was borrowed or false if there was an error somewhere
      */
     @Override
     public boolean borrowItem(Customer customer) {
@@ -137,7 +150,6 @@ public abstract class Vehicle implements BorrowAble {
         System.out.println(Main.RED + "Error in renting" + Main.RESET);
         return false;
     }
-
 
     @Override
     public boolean returnItem() {
